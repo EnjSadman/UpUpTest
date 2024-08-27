@@ -13,10 +13,10 @@ export async function DataFetcher ({ pageNumber, characterId, status, name }: Pr
   let result;
   let moddedUrl = BASE_URL;
   if (
-    pageNumber == undefined
-    && characterId == undefined
-    && status == undefined
-    && name == undefined
+    pageNumber === undefined
+    && characterId === undefined
+    && status === undefined
+    && name === undefined
   ) {
     result = await fetch(BASE_URL);
     result = result.json();

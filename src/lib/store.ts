@@ -1,7 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
+import CharaterReducer from './features/CharacterSlice/CharacterSlice';
+import InfoReducer from './features/InfoSlice/InfoSlice';
 
 export const store = configureStore({
   reducer: {
+    characters: CharaterReducer,
+    info: InfoReducer,
   },
 })
 
