@@ -1,5 +1,6 @@
 export enum Status {
   dead = "dead",
   alive = "alive",
-  unknown = "unknown"
+  unknown = "unknown",
+  all = "all"
 }

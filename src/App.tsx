@@ -1,14 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { useDispatch } from 'react-redux';
 import { DataFetcher } from './components/DataFetcher/DataFetcher';
-import { Character, RequestResponse } from './utils/types';
 import { initializeCharacters } from './lib/features/CharacterSlice/CharacterSlice';
-import { RootState } from './lib/store';
 
 import { initializeInfo } from './lib/features/InfoSlice/InfoSlice';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { DataTable } from './components/DataTable/DataTable';
+import { Status } from './utils/enums';
 
 function App() {
 
@@ -20,6 +19,10 @@ function App() {
     dispatch(initializeInfo(result.info))
   }
 
+  const [searchValue, setSearchValue] = useState("");
+  const [statusValue, setStatusValue] = useState<Status>(Status.all);
+  const [currentPage, setCurrentPage] = useState(1);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -28,7 +31,8 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/" element={<DataTable/>}/>
+          <Route path="/" element={<DataTable />}/>
+          <Route path=":id" element={<div>123</div>} />
         </Routes>
       </Router>
     </div>

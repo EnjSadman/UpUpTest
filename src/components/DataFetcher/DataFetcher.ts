@@ -47,7 +47,13 @@ export async function DataFetcher ({ pageNumber, characterId, status, name }: Pr
   }
 
   result = await fetch(moddedUrl);
-  result = result.json;
+  result = result.json();
+
+  return result;
+}
+
+export async function DirectLinkFetch(link:string) {
+  let result = await fetch(link);
 
   return result;
 }

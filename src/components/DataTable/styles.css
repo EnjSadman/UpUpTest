@@ -1,0 +1,10 @@
+.right__row {
+  color: inherit;
+  display: table-row;
+  vertical-align: middle;
+  outline: 0;
+}
+
+.table__cell {
+  width: 100%;
+}
