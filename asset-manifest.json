@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/UpUpTest/static/css/main.2ed4d641.css",
+    "main.js": "/UpUpTest/static/js/main.daac3895.js",
+    "static/js/453.4edf7fdc.chunk.js": "/UpUpTest/static/js/453.4edf7fdc.chunk.js",
+    "index.html": "/UpUpTest/index.html",
+    "main.2ed4d641.css.map": "/UpUpTest/static/css/main.2ed4d641.css.map",
+    "main.daac3895.js.map": "/UpUpTest/static/js/main.daac3895.js.map",
+    "453.4edf7fdc.chunk.js.map": "/UpUpTest/static/js/453.4edf7fdc.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2ed4d641.css",
+    "static/js/main.daac3895.js"
+  ]
+}
