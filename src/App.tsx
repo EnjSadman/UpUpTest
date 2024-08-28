@@ -37,7 +37,7 @@ function App() {
   
   return (
     <div className="App">
-      <Router>
+      <Router basename={`/${process.env.PUBLIC_URL}`}>
         <Routes>
           <Route path="/" element={<Main />}/>
           <Route path=":id" element={<CharacterPage />} />
