@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../lib/store"
-import { SingleCharacterFetch } from "../DataFetcher/DataFetcher";
+import { SingleCharacterFetch } from "../../components/DataFetcher/DataFetcher";
 import { setSelectedCharacter } from "../../lib/features/MiscSlice/MiscSlice";
 import { Character } from "../../utils/types";
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
@@ -8,6 +8,7 @@ import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 import './styles.css';
 import { useNavigate } from "react-router-dom";
+import { DialogWindow } from "../../components/DialogWindow/DialogWindow";
 export function CharacterPage () {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -113,33 +114,36 @@ export function CharacterPage () {
   
 
   return(
-    <div className="character">
-      <div className="character__goback">
-        <div
-          className="character__goback--text"
-          onClick={() => {
-            navigate("/")
-            dispatch(setSelectedCharacter(undefined))
-          }}
-        >
-          <KeyboardBackspaceIcon/>
-          Go back
+    <>
+      <DialogWindow />
+      <div className="character">
+        <div className="character__goback">
+          <div
+            className="character__goback--text"
+            onClick={() => {
+              navigate("/")
+              dispatch(setSelectedCharacter(undefined))
+            }}
+          >
+            <KeyboardBackspaceIcon/>
+            Go back
+          </div>
+        </div>
+        <div className="character__container">
+          <h1 className="character__name">
+            {
+              currentCharacter?.name
+            }
+          </h1>
+          <img src={currentCharacter?.image} alt={currentCharacter?.name} />
+          <p className="character__status">
+            {
+              (currentCharacter !== undefined) ? bioGenerator(currentCharacter) : ""
+              
+            }
+          </p>
         </div>
       </div>
-      <div className="character__container">
-        <h1 className="character__name">
-          {
-            currentCharacter?.name
-          }
-        </h1>
-        <img src={currentCharacter?.image} alt={currentCharacter?.name} />
-        <p className="character__status">
-          {
-            (currentCharacter !== undefined) ? bioGenerator(currentCharacter) : ""
-            
-          }
-        </p>
-      </div>
-    </div>
+    </>
   )
 }

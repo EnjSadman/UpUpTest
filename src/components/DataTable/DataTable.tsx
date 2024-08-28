@@ -1,19 +1,19 @@
+import './styles.css';
 import { Pagination, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../lib/store';
 import { Character } from '../../utils/types';
 import { useNavigate } from 'react-router-dom';
-
-import './styles.css';
 import { DirectLinkFetch } from '../DataFetcher/DataFetcher';
 import { initializeCharacters } from '../../lib/features/CharacterSlice/CharacterSlice';
 import { initializeInfo } from '../../lib/features/InfoSlice/InfoSlice';
-import { changePage, setSelectedCharacter } from '../../lib/features/MiscSlice/MiscSlice';
+import { changePage, setModalOpened, setModalState, setSelectedCharacter } from '../../lib/features/MiscSlice/MiscSlice';
 import { Toolbar } from '../Toolbar/Toolbar';
-
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Dialog from '@mui/material/Dialog';
+import { ModalState } from '../../utils/enums';
 
 export function DataTable () {
   const charactersList = (useSelector((state : RootState) => state.characters)).characters;
@@ -33,7 +33,6 @@ export function DataTable () {
   
   return (
     <>
-      <Toolbar />
       <Table sx={{minWidth: "100vw"}}>
           <TableHead>
             <TableRow>
@@ -68,8 +67,22 @@ export function DataTable () {
                             {el.species}
                         </TableCell>
                         <TableCell>
-                          <DeleteOutlineIcon />
-                          <EditIcon />
+                          <DeleteOutlineIcon
+                            sx={{cursor: "pointer"}}
+                            onClick={() => {
+                              dispatch(setModalOpened(true))
+                              dispatch(setModalState(ModalState.delete));
+                              dispatch(setSelectedCharacter(el));
+                            }}
+                          />
+                          <EditIcon
+                            sx={{cursor: "pointer"}}
+                            onClick={() => {
+                              dispatch(setModalOpened(true))
+                              dispatch(setModalState(ModalState.edit));
+                              dispatch(setSelectedCharacter(el));
+                            }}
+                          />
                           <MoreHorizIcon
                             sx={{cursor: "pointer"}}
                             onClick={() => {

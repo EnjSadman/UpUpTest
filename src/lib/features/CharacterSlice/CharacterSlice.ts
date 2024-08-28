@@ -14,7 +14,11 @@ const CharaterSlice = createSlice({
   initialState,
   reducers: {
     initializeCharacters : (state, action :PayloadAction<Character[]>) => {
-      state.characters = [...action.payload]
+      if (action.payload !== undefined) {
+        state.characters = [...action.payload]
+      } else {
+        state.characters = [];
+      }
     }
   }
 })

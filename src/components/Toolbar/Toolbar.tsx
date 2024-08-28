@@ -3,8 +3,8 @@ import "./styles.css"
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../lib/store";
-import { setSearchValue, setStatus } from "../../lib/features/MiscSlice/MiscSlice";
-import { Status } from "../../utils/enums";
+import { setModalOpened, setModalState, setSearchValue, setStatus } from "../../lib/features/MiscSlice/MiscSlice";
+import { ModalState, Status } from "../../utils/enums";
 import AddIcon from '@mui/icons-material/Add';
 
 export function Toolbar() {
@@ -19,6 +19,10 @@ export function Toolbar() {
         variant="outlined"
         sx={{boxSizing: "border-box"}}
         size="small"
+        onClick={() => {
+          dispatch(setModalState(ModalState.add))
+          dispatch(setModalOpened(true))
+        }}
       >
         Add new character 
         <AddIcon />

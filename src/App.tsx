@@ -6,11 +6,11 @@ import { initializeCharacters } from './lib/features/CharacterSlice/CharacterSli
 
 import { initializeInfo } from './lib/features/InfoSlice/InfoSlice';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import { DataTable } from './components/DataTable/DataTable';
 import { RootState } from './lib/store';
 import { changePage } from './lib/features/MiscSlice/MiscSlice';
 import { FetchProps } from './utils/types';
-import { CharacterPage } from './components/CharacterPage/CharacterPage';
+import { CharacterPage } from './pages/CharacterPage/CharacterPage';
+import { Main } from './pages/Main/Main';
 
 function App() {
 
@@ -39,7 +39,7 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/" element={<DataTable />}/>
+          <Route path="/" element={<Main />}/>
           <Route path=":id" element={<CharacterPage />} />
         </Routes>
       </Router>

@@ -1,0 +1,22 @@
+.dialogPaper {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 400px;
+  min-height: 200px;
+  padding: 20px 40px;
+}
+
+.dialog__close {
+  text-align: right;
+}
+
+.dialog__buttons {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dialog__deletion--text {
+  text-align: center;
+}
