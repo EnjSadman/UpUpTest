@@ -1,38 +1,46 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import './App.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { DataFetcher } from './components/DataFetcher/DataFetcher';
 import { initializeCharacters } from './lib/features/CharacterSlice/CharacterSlice';
 
 import { initializeInfo } from './lib/features/InfoSlice/InfoSlice';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { DataTable } from './components/DataTable/DataTable';
-import { Status } from './utils/enums';
+import { RootState } from './lib/store';
+import { changePage } from './lib/features/MiscSlice/MiscSlice';
+import { FetchProps } from './utils/types';
+import { CharacterPage } from './components/CharacterPage/CharacterPage';
 
 function App() {
 
   const dispatch = useDispatch();
 
-  const fetchData = async () => {
-    let result = await DataFetcher({});
+  const search = useSelector((state : RootState) => state.misc).searchValue;
+  const status = useSelector((state : RootState) => state.misc).statusValue;
+  const pageNumber = useSelector((state : RootState) => state.misc).pageNumber;
+
+  const fetchData = async ({ pageNumber, characterId, status, name }: FetchProps) => {
+    let result = await DataFetcher({pageNumber, characterId, status, name});
     dispatch(initializeCharacters(result.results));
     dispatch(initializeInfo(result.info))
   }
 
-  const [searchValue, setSearchValue] = useState("");
-  const [statusValue, setStatusValue] = useState<Status>(Status.all);
-  const [currentPage, setCurrentPage] = useState(1);
+  useEffect(() => {
+    fetchData({});
+  }, []);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    dispatch(changePage(1));
+    fetchData({name: search, status: status})
+  }, [search, status])
   
   return (
     <div className="App">
       <Router>
         <Routes>
           <Route path="/" element={<DataTable />}/>
-          <Route path=":id" element={<div>123</div>} />
+          <Route path=":id" element={<CharacterPage />} />
         </Routes>
       </Router>
     </div>

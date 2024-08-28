@@ -2,21 +2,25 @@ import { Pagination, Table, TableBody, TableCell, TableHead, TableRow } from '@m
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../lib/store';
 import { Character } from '../../utils/types';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import './styles.css';
-import { useState } from 'react';
 import { DirectLinkFetch } from '../DataFetcher/DataFetcher';
 import { initializeCharacters } from '../../lib/features/CharacterSlice/CharacterSlice';
 import { initializeInfo } from '../../lib/features/InfoSlice/InfoSlice';
+import { changePage, setSelectedCharacter } from '../../lib/features/MiscSlice/MiscSlice';
+import { Toolbar } from '../Toolbar/Toolbar';
+
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditIcon from '@mui/icons-material/Edit';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 export function DataTable () {
   const charactersList = (useSelector((state : RootState) => state.characters)).characters;
-  const InfoObject = (useSelector((state : RootState) => state.info)).info;
+  const infoObject = (useSelector((state : RootState) => state.info)).info;
+  const currentPage = (useSelector((state: RootState) => state.misc)).pageNumber;
 
   const dispatch = useDispatch();
-
-  const [currentPage, setCurrentPage] = useState(1);
 
   const navigate = useNavigate();
 
@@ -28,60 +32,75 @@ export function DataTable () {
   }
   
   return (
-    <Table sx={{minWidth: "100vw"}}>
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              Name
-            </TableCell>
-            <TableCell>
-              Status
-            </TableCell>
-            <TableCell>
-              Species
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {
-            charactersList.map((el : Character) => {
-              return (
-                <TableRow
-                  key={el.id}
-                  onClick={() => navigate(`/${el.id}`)}
-                  sx={{cursor: "pointer"}}
-                >
-                      <TableCell>
-                          {el.name}
-                      </TableCell>
-                      <TableCell>
-                          {el.status}
-                      </TableCell>
-                      <TableCell>
-                          {el.species}
-                      </TableCell>
-                </TableRow>
-              )
-            })
-          }
-          <Pagination 
-            defaultPage={1}
-            count={InfoObject.pages}
-            onChange={(event, page) => {
-              if (page < currentPage) {
-                if (InfoObject.prev !== null) {
-                  fetchData(InfoObject.prev);
+    <>
+      <Toolbar />
+      <Table sx={{minWidth: "100vw"}}>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                Name
+              </TableCell>
+              <TableCell>
+                Status
+              </TableCell>
+              <TableCell>
+                Species
+              </TableCell>
+              <TableCell>
+
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {
+              charactersList.map((el : Character) => {
+                return (
+                  <TableRow
+                    key={el.id}
+                  >
+                        <TableCell>
+                            {el.name}
+                        </TableCell>
+                        <TableCell>
+                            {el.status}
+                        </TableCell>
+                        <TableCell>
+                            {el.species}
+                        </TableCell>
+                        <TableCell>
+                          <DeleteOutlineIcon />
+                          <EditIcon />
+                          <MoreHorizIcon
+                            sx={{cursor: "pointer"}}
+                            onClick={() => {
+                              navigate(`/${el.id}`);
+                              dispatch(setSelectedCharacter(el));
+                            }}
+                          />
+                        </TableCell>
+                  </TableRow>
+                )
+              })
+            }
+            <Pagination 
+              defaultPage={currentPage}
+              count={infoObject.pages}
+              onChange={(event, page) => {
+                if (page < currentPage) {
+                  if (infoObject.prev !== null) {
+                    fetchData(infoObject.prev);
+                  }
+                  dispatch(changePage(page));
+                } else {
+                  if (infoObject.next !== null) {
+                    fetchData(infoObject.next);
+                  }
+                  dispatch(changePage(page));
                 }
-                setCurrentPage(page);
-              } else {
-                if (InfoObject.next !== null) {
-                  fetchData(InfoObject.next);
-                }
-                setCurrentPage(page);
-              }
-            }}
-          />
-        </TableBody>
+              }}
+            />
+          </TableBody>
       </Table>
+    </>
   )
 }

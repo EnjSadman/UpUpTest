@@ -1,5 +1,12 @@
 import { Status } from "./enums";
 
+export type FetchProps = {
+  pageNumber?: number;
+  characterId?: number;
+  status?: Status;
+  name?: string;
+}
+
 export type Character = {
   id: number;
   name: string;

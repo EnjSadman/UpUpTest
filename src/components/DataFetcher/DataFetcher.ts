@@ -1,22 +1,17 @@
 import { Status } from "../../utils/enums";
+import { FetchProps } from "../../utils/types";
 
 const BASE_URL = "https://rickandmortyapi.com/api/character/";
 
-interface Props {
-  pageNumber?: number;
-  characterId?: number;
-  status?: Status;
-  name?: string;
-}
 
-export async function DataFetcher ({ pageNumber, characterId, status, name }: Props) {
+
+export async function DataFetcher ({ pageNumber, status, name }: FetchProps) {
   let result;
   let moddedUrl = BASE_URL;
   if (
     pageNumber === undefined
-    && characterId === undefined
-    && status === undefined
-    && name === undefined
+    && (status === undefined || status === Status.all)
+    && (name === undefined || name === "")
   ) {
     result = await fetch(BASE_URL);
     result = result.json();
@@ -24,7 +19,7 @@ export async function DataFetcher ({ pageNumber, characterId, status, name }: Pr
     return result;
   }
 
-  if (pageNumber !== undefined || status !== undefined || name !== undefined) {
+  if (pageNumber !== undefined || (name !== undefined || name !== "")) {
     moddedUrl += `?`
   }
 
@@ -37,12 +32,12 @@ export async function DataFetcher ({ pageNumber, characterId, status, name }: Pr
 
   if (name !== undefined) {
     moddedUrl += `name=${name}`
-    if (status !== undefined) {
+    if (status !== undefined && status !== Status.all) {
       moddedUrl += "&"
     }
   }
 
-  if (status !== undefined) {
+  if (status !== undefined && status !== Status.all) {
     moddedUrl += `status=${status}`
   }
 
@@ -50,6 +45,12 @@ export async function DataFetcher ({ pageNumber, characterId, status, name }: Pr
   result = result.json();
 
   return result;
+}
+
+export async function SingleCharacterFetch(characterId : number) {
+  let result = await fetch(`${BASE_URL}${characterId}`);
+  
+  return result.json();
 }
 
 export async function DirectLinkFetch(link:string) {
