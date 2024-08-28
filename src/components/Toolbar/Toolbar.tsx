@@ -28,6 +28,7 @@ export function Toolbar() {
         <AddIcon />
       </Button>
       <TextField
+        sx={{minWidth: 300}}
         id="outlined-basic"
         label="Character name"
         variant="outlined"

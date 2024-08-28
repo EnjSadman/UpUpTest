@@ -8,6 +8,8 @@ import FormControl from '@mui/material/FormControl';
 import CloseIcon from '@mui/icons-material/Close';
 import { setModalOpened, setSelectedCharacter } from '../../lib/features/MiscSlice/MiscSlice';
 import { useEffect, useState } from 'react';
+import { addCharacter, deleteCharacter, editCharacter } from '../../lib/features/CharacterSlice/CharacterSlice';
+import { Character } from '../../utils/types';
 
 export function DialogWindow() {
   const dispatch = useDispatch();
@@ -24,9 +26,8 @@ export function DialogWindow() {
   const [characterImage, setCharacterImage] = useState("");
 
   useEffect(() => {
-    if (dialogState == ModalState.edit && selectedCharacter !== undefined) {
+    if (dialogState === ModalState.edit && selectedCharacter !== undefined) {
       setCharacterName(selectedCharacter.name);
-      console.log(setCharacterStatus((selectedCharacter.status) as Status))
       setCharacterStatus((selectedCharacter.status) as Status);
       setCharacterGender((selectedCharacter.gender) as Gender);
       setCharacterSpecies(selectedCharacter.species);
@@ -47,8 +48,6 @@ export function DialogWindow() {
     
     dispatch(setSelectedCharacter(undefined));
   }
-
-  console.log(characterStatus)
 
   switch (dialogState) {
     case (ModalState.add): {
@@ -74,9 +73,25 @@ export function DialogWindow() {
           <FormControl
             sx={{gap: "30px"}}
           >
+            {(characterImage !== undefined && characterImage !== "") ?
+              <img className='dialog__image--preview' src={characterImage}  />
+            : <div>There no image of this character</div>
+            }
+            <TextField
+              id="input-image"
+              label="Link to image"
+              value={characterImage}
+              onChange={(event) => {
+                setCharacterImage(event.target.value)
+              }}
+            />
             <TextField
               id="input-name"
               label="Character name"
+              value={characterName}
+              onChange={(event) => {
+                setCharacterName(event.target.value)
+              }}
             />
             <Select
               id="gender"
@@ -126,14 +141,26 @@ export function DialogWindow() {
             <TextField
               id="input-species"
               label="Character species"
+              value={characterSpecies}
+              onChange={(event) => {
+                setCharacterSpecies(event.target.value)
+              }}
             />
             <TextField
               id="input-species"
               label="Character origin"
+              value={characterOrigin}
+              onChange={(event) => {
+                setCharacterOrigin(event.target.value)
+              }}
             />
             <TextField
               id="input-species"
               label="Character location"
+              value={characterLocation}
+              onChange={(event) => {
+                setCharacterLocation(event.target.value)
+              }}
             />
           </FormControl>
           <div className='dialog__buttons'>
@@ -152,6 +179,32 @@ export function DialogWindow() {
                 color="success"
                 variant='contained'
                 size='large'
+                onClick={() => {
+                  const newCharacter : Character = {
+                    id: selectedCharacter?.id ?? 0,
+                    name: characterName,
+                    status: characterStatus,
+                    species: characterSpecies,
+                    type: '',
+                    gender: characterGender,
+                    origin: {
+                      name: characterOrigin,
+                      url: selectedCharacter?.origin.url ?? "",
+                    },
+                    location: {
+                      name: characterLocation,
+                      url: selectedCharacter?.location.url ?? ""
+                    },
+                    image: characterImage,
+                    episode: [...selectedCharacter?.episode ?? []],
+                    url: selectedCharacter?.url ?? "",
+                    created: selectedCharacter?.created ?? ""
+                  }
+                  console.log(newCharacter);
+                  dispatch(addCharacter(newCharacter));
+                  dispatch(setModalOpened(false));
+
+                }}
               >
                 Save
               </Button>
@@ -182,6 +235,18 @@ export function DialogWindow() {
           <FormControl
             sx={{gap: "30px"}}
           >
+            {(characterImage !== undefined && characterImage !== "") ?
+              <img className='dialog__image--preview' src={characterImage}  />
+            : <div>There no image of this character</div>
+            }
+            <TextField
+              id="input-image"
+              label="Link to image"
+              value={characterImage}
+              onChange={(event) => {
+                setCharacterImage(event.target.value)
+              }}
+            />
             <TextField
               id="input-name"
               label="Character name"
@@ -278,6 +343,32 @@ export function DialogWindow() {
                 color="success"
                 variant='contained'
                 size='large'
+
+                onClick={() => {
+                  const editedCharacter : Character = {
+                    id: selectedCharacter?.id ?? 0,
+                    name: characterName,
+                    status: characterStatus,
+                    species: characterSpecies,
+                    type: '',
+                    gender: characterGender,
+                    origin: {
+                      name: characterOrigin,
+                      url: selectedCharacter?.origin.url ?? "",
+                    },
+                    location: {
+                      name: characterLocation,
+                      url: selectedCharacter?.location.url ?? ""
+                    },
+                    image: characterImage,
+                    episode: [...selectedCharacter?.episode ?? []],
+                    url: selectedCharacter?.url ?? "",
+                    created: selectedCharacter?.created ?? ""
+                  }
+                  dispatch(editCharacter(editedCharacter));
+                  dispatch(setModalOpened(false));
+                  deleteStateValues();
+                }}
               >
                 Save
               </Button>
@@ -307,7 +398,11 @@ export function DialogWindow() {
                 variant='contained'
                 size='large'
                 onClick={() => {
-                  
+                  if (selectedCharacter !== undefined) {
+                    dispatch(deleteCharacter(selectedCharacter));
+                  }
+                  dispatch(setModalOpened(false));
+                  deleteStateValues();
                 }}
               >
                 Yes

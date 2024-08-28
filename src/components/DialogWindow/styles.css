@@ -12,11 +12,16 @@
 }
 
 .dialog__buttons {
-  margin-top: 40px;
+  margin-top: 16px;
   display: flex;
   justify-content: space-between;
 }
 
 .dialog__deletion--text {
   text-align: center;
+}
+
+.dialog__image--preview {
+  max-width: 200px;
+  max-height: 200px;
 }

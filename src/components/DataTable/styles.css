@@ -8,3 +8,8 @@
 .table__cell {
   width: 100%;
 }
+
+.data__table--icon-container {
+  display: flex;
+  gap: 30px;
+}

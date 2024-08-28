@@ -8,11 +8,9 @@ import { DirectLinkFetch } from '../DataFetcher/DataFetcher';
 import { initializeCharacters } from '../../lib/features/CharacterSlice/CharacterSlice';
 import { initializeInfo } from '../../lib/features/InfoSlice/InfoSlice';
 import { changePage, setModalOpened, setModalState, setSelectedCharacter } from '../../lib/features/MiscSlice/MiscSlice';
-import { Toolbar } from '../Toolbar/Toolbar';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import Dialog from '@mui/material/Dialog';
 import { ModalState } from '../../utils/enums';
 
 export function DataTable () {
@@ -33,7 +31,7 @@ export function DataTable () {
   
   return (
     <>
-      <Table sx={{minWidth: "100vw"}}>
+      <Table>
           <TableHead>
             <TableRow>
               <TableCell>
@@ -66,9 +64,12 @@ export function DataTable () {
                         <TableCell>
                             {el.species}
                         </TableCell>
-                        <TableCell>
+                        <TableCell
+                          sx={{display: "flex", justifyContent:"space-between"}}
+                        >
                           <DeleteOutlineIcon
                             sx={{cursor: "pointer"}}
+                            color='warning'
                             onClick={() => {
                               dispatch(setModalOpened(true))
                               dispatch(setModalState(ModalState.delete));
@@ -96,6 +97,8 @@ export function DataTable () {
               })
             }
             <Pagination 
+              sx={{margin: "16px auto"}}
+              
               defaultPage={currentPage}
               count={infoObject.pages}
               onChange={(event, page) => {
