@@ -1,0 +1,34 @@
+.character {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.character__container {
+  display: flex;
+  flex-direction: column;
+
+  margin: 0 auto;
+
+  padding: 40px 0 40px 0;
+}
+
+.character__name {
+  text-align: center;
+}
+
+.character__bio {
+  text-align: center;
+}
+
+.character__goback {
+  padding: 20px;
+}
+
+.character__goback--text {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
